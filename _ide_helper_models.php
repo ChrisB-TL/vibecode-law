@@ -1,0 +1,345 @@
+<?php
+
+// @formatter:off
+// phpcs:ignoreFile
+/**
+ * A helper file for your Eloquent Models
+ * Copy the phpDocs from this file to the correct Model,
+ * And remove them from this file, to prevent double declarations.
+ *
+ * @author Barry vd. Heuvel <barryvdh@gmail.com>
+ */
+
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Showcase\Showcase> $showcases
+ * @property-read int|null $showcases_count
+ * @method static \Database\Factories\PracticeAreaFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PracticeArea newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PracticeArea newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PracticeArea query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PracticeArea whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PracticeArea whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PracticeArea whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PracticeArea whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PracticeArea whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperPracticeArea {}
+}
+
+namespace App\Models\Showcase{
+/**
+ * @property array{x: int, y: int, width: int, height: int}|null $thumbnail_crop
+ * @property int $id
+ * @property int|null $user_id
+ * @property string $title
+ * @property string $slug
+ * @property string $tagline
+ * @property string $description
+ * @property string|null $key_features
+ * @property string|null $help_needed
+ * @property string|null $url
+ * @property string|null $video_url
+ * @property \App\Enums\SourceStatus $source_status
+ * @property string|null $source_url
+ * @property string|null $thumbnail_extension
+ * @property \App\Enums\ShowcaseStatus $status
+ * @property \Illuminate\Support\Carbon|null $submitted_date
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property \Illuminate\Support\Carbon|null $approval_celebrated_at
+ * @property int|null $approved_by
+ * @property string|null $rejection_reason
+ * @property \Illuminate\Support\Carbon|null $launch_date
+ * @property int $view_count
+ * @property bool $is_featured
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User|null $approvedBy
+ * @property-read \App\Models\Showcase\ShowcaseDraft|null $draft
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Showcase\ShowcaseImage> $images
+ * @property-read int|null $images_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PracticeArea> $practiceAreas
+ * @property-read int|null $practice_areas_count
+ * @property-read string|null $thumbnail_rect_string
+ * @property-read string|null $thumbnail_url
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $upvoters
+ * @property-read int|null $upvoters_count
+ * @property-read \App\Models\User|null $user
+ * @property-read string|null $youtube_id
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase approved()
+ * @method static \Database\Factories\Showcase\ShowcaseFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase featured()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase pending()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase publiclyVisible()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereApprovalCelebratedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereApprovedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereApprovedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereHelpNeeded($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereIsFeatured($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereKeyFeatures($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereLaunchDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereRejectionReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereSourceStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereSourceUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereSubmittedDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereTagline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereThumbnailCrop($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereThumbnailExtension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereVideoUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase whereViewCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Showcase withoutTrashed()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperShowcase {}
+}
+
+namespace App\Models\Showcase{
+/**
+ * @property array{x: int, y: int, width: int, height: int}|null $thumbnail_crop
+ * @property int $id
+ * @property int $showcase_id
+ * @property string $title
+ * @property string $tagline
+ * @property string $description
+ * @property string|null $key_features
+ * @property string|null $help_needed
+ * @property string|null $url
+ * @property string|null $video_url
+ * @property \App\Enums\SourceStatus $source_status
+ * @property string|null $source_url
+ * @property string|null $thumbnail_extension
+ * @property \Illuminate\Support\Carbon|null $launch_date
+ * @property \App\Enums\ShowcaseDraftStatus $status
+ * @property \Illuminate\Support\Carbon|null $submitted_at
+ * @property string|null $rejection_reason
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Showcase\ShowcaseDraftImage> $images
+ * @property-read int|null $images_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PracticeArea> $practiceAreas
+ * @property-read int|null $practice_areas_count
+ * @property-read \App\Models\Showcase\Showcase $showcase
+ * @property-read string|null $thumbnail_rect_string
+ * @property-read string|null $thumbnail_url
+ * @method static \Database\Factories\Showcase\ShowcaseDraftFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereHelpNeeded($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereKeyFeatures($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereLaunchDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereRejectionReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereShowcaseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereSourceStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereSourceUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereSubmittedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereTagline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereThumbnailCrop($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereThumbnailExtension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraft whereVideoUrl($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperShowcaseDraft {}
+}
+
+namespace App\Models\Showcase{
+/**
+ * @property int $id
+ * @property int $showcase_draft_id
+ * @property int|null $original_image_id
+ * @property string $action
+ * @property string|null $path
+ * @property string|null $filename
+ * @property string|null $alt_text
+ * @property int $order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Showcase\ShowcaseImage|null $originalImage
+ * @property-read \App\Models\Showcase\ShowcaseDraft $showcaseDraft
+ * @property-read string|null $url
+ * @method static \Database\Factories\Showcase\ShowcaseDraftImageFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereAction($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereAltText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereOriginalImageId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereShowcaseDraftId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseDraftImage whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperShowcaseDraftImage {}
+}
+
+namespace App\Models\Showcase{
+/**
+ * @property int $id
+ * @property int $showcase_id
+ * @property string $path
+ * @property string $filename
+ * @property int $order
+ * @property string|null $alt_text
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Showcase\Showcase $showcase
+ * @property-read string $url
+ * @method static \Database\Factories\Showcase\ShowcaseImageFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage whereAltText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage whereFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage whereShowcaseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseImage whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperShowcaseImage {}
+}
+
+namespace App\Models\Showcase{
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $showcase_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Showcase\Showcase $showcase
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseUpvote newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseUpvote newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseUpvote query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseUpvote whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseUpvote whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseUpvote whereShowcaseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseUpvote whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ShowcaseUpvote whereUserId($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperShowcaseUpvote {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $handle
+ * @property string|null $organisation
+ * @property string|null $job_title
+ * @property string $email
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string|null $password
+ * @property bool $is_admin
+ * @property string|null $avatar_path
+ * @property string|null $linkedin_url
+ * @property string|null $bio
+ * @property string|null $linkedin_id
+ * @property string|null $linkedin_token
+ * @property \Illuminate\Support\Carbon|null $blocked_from_submissions_at
+ * @property \App\Enums\TeamType|null $team_type
+ * @property string|null $team_role
+ * @property int|null $team_order
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $two_factor_secret
+ * @property string|null $two_factor_recovery_codes
+ * @property \Illuminate\Support\Carbon|null $two_factor_confirmed_at
+ * @property-read string|null $avatar
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Showcase\Showcase> $showcases
+ * @property-read int|null $showcases_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Showcase\Showcase> $upvotedShowcases
+ * @property-read int|null $upvoted_showcases_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User collaborators()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User coreTeam()
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User permission($permissions, $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User role($roles, $guard = null, $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User teamMembers()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatarPath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBlockedFromSubmissionsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereHandle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereJobTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLinkedinId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLinkedinToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLinkedinUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereOrganisation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTeamOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTeamRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTeamType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorConfirmedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorRecoveryCodes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTwoFactorSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperUser {}
+}
+

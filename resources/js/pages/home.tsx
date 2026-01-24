@@ -1,0 +1,158 @@
+import HomeController from '@/actions/App/Http/Controllers/HomeController';
+import ShowcaseCreateController from '@/actions/App/Http/Controllers/Showcase/ManageShowcase/ShowcaseCreateController';
+import { ProjectItem } from '@/components/showcase/showcase-item';
+import { ProjectMonthSection } from '@/components/showcase/showcase-month-section';
+import { Button } from '@/components/ui/button';
+import PublicLayout from '@/layouts/public-layout';
+import { type SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
+
+interface HomeProps {
+    showcasesByMonth?: Record<
+        string,
+        App.Http.Resources.Showcase.ShowcaseResource[]
+    >;
+    featuredShowcases?: App.Http.Resources.Showcase.ShowcaseResource[];
+}
+
+export default function Home({
+    showcasesByMonth,
+    featuredShowcases,
+}: HomeProps) {
+    const { name, appUrl, defaultMetaDescription } =
+        usePage<SharedData>().props;
+    const isPreLaunch = featuredShowcases !== undefined;
+    const months = showcasesByMonth ? Object.keys(showcasesByMonth) : [];
+
+    return (
+        <PublicLayout>
+            <Head title="Home">
+                <meta
+                    head-key="description"
+                    name="description"
+                    content={defaultMetaDescription}
+                />
+                <meta head-key="og-type" property="og:type" content="website" />
+                <meta head-key="og-title" property="og:title" content={name} />
+                <meta
+                    head-key="og-image"
+                    property="og:image"
+                    content={`${appUrl}/static/og-text-logo.png`}
+                />
+                <meta
+                    head-key="og-description"
+                    property="og:description"
+                    content={defaultMetaDescription}
+                />
+                <meta
+                    head-key="og-url"
+                    property="og:url"
+                    content={`${appUrl}${HomeController.url()}`}
+                />
+            </Head>
+
+            {/* Hero Section */}
+            <section className="bg-white py-16 dark:bg-neutral-950">
+                <div className="mx-auto max-w-5xl px-4 text-center">
+                    <h1 className="text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl dark:text-white">
+                        Build. Launch. Discover.
+                    </h1>
+                    {isPreLaunch ? (
+                        <div className="mx-auto mt-8 max-w-4xl space-y-4 text-lg text-neutral-600 dark:text-neutral-400">
+                            <p>
+                                vibecode.law is a new open platform for the
+                                legal community. Let's see what you've been
+                                building!{' '}
+                            </p>
+
+                            <p>
+                                We're launching in the coming days and all
+                                projects will go live together. Submit now to be
+                                one of the first.
+                            </p>
+
+                            <div className="py-4">
+                                <Button asChild size="lg">
+                                    <Link href={ShowcaseCreateController.url()}>
+                                        Submit Your Project
+                                    </Link>
+                                </Button>
+                            </div>
+
+                            <p>
+                                If you are keen to contribute in a different
+                                way, please reach out at{' '}
+                                <a
+                                    href="mailto:hello@vibecode.law"
+                                    className="font-medium text-neutral-900 underline underline-offset-4 hover:text-neutral-700 dark:text-white dark:hover:text-neutral-300"
+                                >
+                                    hello@vibecode.law
+                                </a>
+                                .
+                            </p>
+
+                            <p>
+                                In the meantime, checkout the preview showcases
+                                below!
+                            </p>
+                        </div>
+                    ) : (
+                        <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
+                            The latest legaltech projects, ranked by the
+                            community.
+                        </p>
+                    )}
+                </div>
+            </section>
+
+            {/* Projects */}
+            <section className="bg-white dark:bg-neutral-950">
+                <div className="mx-auto max-w-5xl overflow-hidden px-4">
+                    {isPreLaunch ? (
+                        featuredShowcases.length > 0 ? (
+                            <div className="py-6">
+                                <div className="mb-4 flex items-center gap-4">
+                                    <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
+                                        Preview Projects
+                                    </h2>
+                                    <div className="h-px flex-1 bg-border/60 dark:border-neutral-800"></div>
+                                </div>
+                                <div className="divide-y divide-neutral-100 overflow-hidden dark:divide-neutral-800">
+                                    {featuredShowcases.map(
+                                        (showcase, index) => (
+                                            <ProjectItem
+                                                key={showcase.id}
+                                                showcase={showcase}
+                                                rank={index + 1}
+                                            />
+                                        ),
+                                    )}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="py-16 text-center">
+                                <p className="text-neutral-500 dark:text-neutral-400">
+                                    No projects yet. Be the first to submit one!
+                                </p>
+                            </div>
+                        )
+                    ) : months.length > 0 ? (
+                        months.map((month) => (
+                            <ProjectMonthSection
+                                key={month}
+                                month={month}
+                                showcases={showcasesByMonth![month]}
+                            />
+                        ))
+                    ) : (
+                        <div className="py-16 text-center">
+                            <p className="text-neutral-500 dark:text-neutral-400">
+                                No projects yet. Be the first to submit one!
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </section>
+        </PublicLayout>
+    );
+}

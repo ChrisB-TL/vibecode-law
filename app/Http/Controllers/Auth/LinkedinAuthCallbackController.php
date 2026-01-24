@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\BaseController;
+use App\Models\User;
+use App\Services\Auth\Linkedin\FindOrCreateLinkedinUserService;
+use App\Services\Auth\Linkedin\SyncUserLinkedinService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Laravel\Socialite\Socialite;
+use Laravel\Socialite\Two\User as LinkedinUser;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+class LinkedinAuthCallbackController extends BaseController
+{
+    public function __invoke(): RedirectResponse
+    {
+        $linkedinUser = $this->getLinkedinUser();
+
+        $result = $this->findOrCreateUser(linkedinUser: $linkedinUser);
+
+        if (is_string($result)) {
+            return $this->redirectWithError(message: $result);
+        }
+
+        Auth::login($result);
+
+        $this->syncUserData(linkedinUser: $linkedinUser, localUser: $result);
+
+        return Redirect::intended();
+    }
+
+    private function getLinkedinUser(): LinkedinUser
+    {
+        /** @var LinkedinUser */
+        return Socialite::driver('linkedin-openid')->user();
+    }
+
+    private function findOrCreateUser(LinkedinUser $linkedinUser): User|string
+    {
+        return new FindOrCreateLinkedinUserService(
+            linkedinUser: $linkedinUser
+        )->handle();
+    }
+
+    private function redirectWithError(string $message): RedirectResponse
+    {
+        return Redirect::route('login')->with('flash', [
+            'message' => ['message' => $message, 'type' => 'error'],
+        ]);
+    }
+
+    private function syncUserData(LinkedinUser $linkedinUser, User $localUser): void
+    {
+        new SyncUserLinkedinService(
+            linkedinUser: $linkedinUser,
+            localUser: $localUser
+        )->handle();
+    }
+}
