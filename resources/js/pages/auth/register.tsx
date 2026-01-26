@@ -1,3 +1,4 @@
+import LegalShowController from '@/actions/App/Http/Controllers/Legal/LegalShowController';
 import { login } from '@/routes';
 import { store } from '@/routes/register';
 import { Form, Head } from '@inertiajs/react';
@@ -12,7 +13,24 @@ import AuthLayout from '@/layouts/auth-layout';
 
 export default function Register() {
     return (
-        <AuthLayout title="Create an account">
+        <AuthLayout
+            title="Create an account"
+            description={
+                <>
+                    By registering, you agree to our{' '}
+                    <TextLink
+                        href={LegalShowController.url('terms-of-service')}
+                    >
+                        Terms of Service
+                    </TextLink>{' '}
+                    and acknowledge our{' '}
+                    <TextLink href={LegalShowController.url('privacy-notice')}>
+                        Privacy Notice
+                    </TextLink>
+                    .
+                </>
+            }
+        >
             <Head title="Register" />
             <Form
                 {...store.form()}

@@ -5,24 +5,28 @@ import { type PropsWithChildren } from 'react';
 interface AuthLayoutProps {
     name?: string;
     title?: string;
+    description?: string | React.ReactNode;
 }
 
 export default function AuthSimpleLayout({
     children,
     title,
+    description,
 }: PropsWithChildren<AuthLayoutProps>) {
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
             <div className="w-full max-w-sm">
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-7">
                     <div className="flex flex-col items-center gap-4">
                         <AppLogo />
 
-                        <div className="space-y-2 text-center">
+                        <div className="space-y-3 text-center">
                             <h1 className="text-xl font-medium">{title}</h1>
-                            {/* <p className="text-center text-sm text-muted-foreground">
-                                {description}
-                            </p> */}
+                            {description && (
+                                <p className="text-center text-sm text-muted-foreground">
+                                    {description}
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className="divide-y">

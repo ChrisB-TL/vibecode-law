@@ -9,6 +9,7 @@ use App\Services\Auth\Linkedin\SyncUserLinkedinService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\User as LinkedinUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -16,7 +17,13 @@ class LinkedinAuthCallbackController extends BaseController
 {
     public function __invoke(): RedirectResponse
     {
-        $linkedinUser = $this->getLinkedinUser();
+        try {
+            $linkedinUser = $this->getLinkedinUser();
+        } catch (InvalidStateException) {
+            return $this->redirectWithError(
+                message: "There was an issue with Linkedin's response. Please try again."
+            );
+        }
 
         $result = $this->findOrCreateUser(linkedinUser: $linkedinUser);
 

@@ -77,7 +77,7 @@ export default function Community({
                             <div className="grid gap-4 sm:grid-cols-2">
                                 {coreTeam.map((user) => (
                                     <CommunityMemberCard
-                                        key={user.id}
+                                        key={user.handle}
                                         user={user}
                                     />
                                 ))}
@@ -98,7 +98,7 @@ export default function Community({
                             <div className="grid gap-4 sm:grid-cols-2">
                                 {collaborators.map((user) => (
                                     <CommunityMemberCard
-                                        key={user.id}
+                                        key={user.handle}
                                         user={user}
                                     />
                                 ))}

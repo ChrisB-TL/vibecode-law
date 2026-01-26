@@ -1,3 +1,4 @@
+import LegalShowController from '@/actions/App/Http/Controllers/Legal/LegalShowController';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FormField } from '@/components/ui/form-field';
 import { Input } from '@/components/ui/input';
@@ -98,11 +99,32 @@ export default function Login({
                         </div>
 
                         {canRegister && (
-                            <div className="text-center text-sm text-muted-foreground">
-                                Don't have an account?{' '}
-                                <TextLink href={register()} tabIndex={5}>
-                                    Sign up
-                                </TextLink>
+                            <div className="space-y-3 text-center text-sm text-muted-foreground">
+                                <p>
+                                    Don't have an account?{' '}
+                                    <TextLink href={register()} tabIndex={5}>
+                                        Sign up
+                                    </TextLink>
+                                </p>
+                                <p>
+                                    By logging in, you agree to our{' '}
+                                    <TextLink
+                                        href={LegalShowController.url(
+                                            'terms-of-service',
+                                        )}
+                                    >
+                                        Terms of Service
+                                    </TextLink>{' '}
+                                    and acknowledge our{' '}
+                                    <TextLink
+                                        href={LegalShowController.url(
+                                            'privacy-notice',
+                                        )}
+                                    >
+                                        Privacy Notice
+                                    </TextLink>
+                                    .
+                                </p>
                             </div>
                         )}
                     </>

@@ -40,7 +40,7 @@ class ShowcaseDraftSubmittedForApproval extends Notification implements ShouldQu
             ->subject('Showcase Edit Submitted for Approval')
             ->greeting('Hello!')
             ->line("Changes to showcase \"{$showcase->title}\" have been submitted by {$user->first_name} {$user->last_name} and are awaiting approval.")
-            ->action('Review Changes', route('staff.showcase-moderation.drafts'))
+            ->action('Review Changes', route('showcase.draft.edit'))
             ->line('Please review and approve or reject these changes.');
     }
 

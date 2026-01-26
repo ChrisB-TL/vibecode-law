@@ -5,9 +5,11 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\User as LinkedinUser;
 
 use function Pest\Laravel\assertAuthenticated;
@@ -299,6 +301,34 @@ describe('existing local account handling', function () {
         // Linkedin ID is updated
         expect($existingUser->linkedin_id)->toBe('linkedin-link');
     });
+
+    it('does not unverify a verified local account when linkedin is not verified', function () {
+        Http::fake();
+
+        $existingUser = User::factory()->create([
+            'email' => 'verified@email.com',
+            'email_verified_at' => $verifiedAt = Date::now(),
+            'linkedin_id' => null,
+        ]);
+
+        Socialite::fake('linkedin-openid', (new LinkedinUser)->map([
+            'id' => 'linkedin-verify',
+            'email' => 'verified@email.com',
+            'user' => [
+                'given_name' => 'Jane',
+                'family_name' => 'Doe',
+                'email_verified' => false,
+            ],
+        ])->setToken('some-token'));
+
+        get('/auth/login/linkedin/callback')
+            ->assertRedirect(route('home'));
+
+        $existingUser->refresh();
+
+        expect($existingUser->email_verified_at->toDateTimeString())->toBe($verifiedAt->toDateTimeString());
+        expect(Auth::id())->toBe($existingUser->id);
+    });
 });
 
 describe('avatar handling', function () {
@@ -437,6 +467,25 @@ describe('avatar handling', function () {
         expect($existingUser->avatar_path)->toStartWith('users/avatars/');
         expect(Storage::disk('public')->get($existingUser->avatar_path))->toBe($newAvatarContent);
         expect(Storage::disk('public')->exists($existingAvatarPath))->toBeFalse();
+    });
+});
+
+describe('error handling', function () {
+    it('redirects to login with error when oauth state is invalid', function () {
+        Socialite::shouldReceive('driver')
+            ->with('linkedin-openid')
+            ->andReturnSelf()
+            ->shouldReceive('user')
+            ->andThrow(new InvalidStateException);
+
+        get('/auth/login/linkedin/callback')
+            ->assertRedirect(route('login'))
+            ->assertSessionHas('flash.message', [
+                'message' => "There was an issue with Linkedin's response. Please try again.",
+                'type' => 'error',
+            ]);
+
+        expect(User::count())->toBe(0);
     });
 });
 
