@@ -3,15 +3,11 @@
 namespace App\Notifications\Showcase;
 
 use App\Models\Showcase\Showcase;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
-class ShowcaseSubmittedForApproval extends Notification implements ShouldQueue
+class ShowcaseSubmittedForApproval extends BaseNotification
 {
-    use Queueable;
-
     public function __construct(public Showcase $showcase) {}
 
     public function via($notifiable): array

@@ -63,6 +63,8 @@ return [
 
         'resend' => [
             'transport' => 'resend',
+            'rate_limit_max_attempts' => env('RESEND_MAX_ATTEMPTS', 1),
+            'rate_limit_decay_seconds' => env('RESEND_DECAY_SECONDS', 1),
         ],
 
         'sendmail' => [

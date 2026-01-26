@@ -4,15 +4,11 @@ namespace App\Notifications\ShowcaseDraft;
 
 use App\Models\Showcase\Showcase;
 use App\Models\Showcase\ShowcaseDraft;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
-class ShowcaseDraftRejected extends Notification implements ShouldQueue
+class ShowcaseDraftRejected extends BaseNotification
 {
-    use Queueable;
-
     public function __construct(public ShowcaseDraft $draft, public string $reason) {}
 
     /**
