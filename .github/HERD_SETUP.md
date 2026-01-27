@@ -33,14 +33,31 @@ This project requires **PHP 8.4**. To ensure you're using the correct version:
 3. Navigate to the **PHP** section
 4. Select **PHP 8.4** as your default version (install it first if needed)
 
-## Step 3: Clone the Repository
+## Step 3: Fork the repository
+
+_If you are just playing around, and don't intend to contribute a PR later, you can skip this step and just use the vibecode-law/vibecode-law URL in Step 4 instead of your fork._
+
+In the Github web UI, create a fork from the top right context menu:
+
+![Fork menu](./images/fork-contextmenu.png "Fork menu")
+
+After creating, you'll be redirected to your new fork.
+
+## Step 4: Clone the forked repository
+
+Navigate to the directory/folder above where you want the project to live:
 
 ```bash
 cd ~/Herd  # or your preferred directory
-git clone https://github.com/vibecode-law/vibecode-law
 ```
 
-## Step 4: Setup Dependencies and Environment
+Then clone the forked repository:
+
+```bash
+git clone URL_TO_REPO # Replace with the URL to your forked repository.
+```
+
+## Step 5: Setup Dependencies and Environment
 
 Open your terminal and navigate to the project directory:
 
@@ -54,7 +71,7 @@ Run the following command to setup your environment:
 composer setup
 ```
 
-## Step 5: Database Setup
+## Step 6: Database Setup
 
 ### Using SQLite (Simplest)
 
@@ -108,7 +125,7 @@ Or, run both together:
 php artisan migrate --seed --seeder=DemoSeeder
 ```
 
-## Step 6: Link the Site in Herd
+## Step 7: Link the Site in Herd
 
 if you didn't create the project in the ~/Herd directory, link the site to Herd:
 
@@ -116,7 +133,7 @@ if you didn't create the project in the ~/Herd directory, link the site to Herd:
 2. Click **Add Site** or drag your project folder into Herd
 3. Herd will automatically configure nginx for your site
 
-## Step 7: Build Frontend Assets
+## Step 8: Build Frontend Assets
 
 For development (with hot reloading):
 
@@ -130,7 +147,7 @@ For production build:
 npm run build
 ```
 
-## Step 8: Access the Application
+## Step 9: Access the Application
 
 Open your browser and visit:
 

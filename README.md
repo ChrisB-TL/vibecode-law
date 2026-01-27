@@ -1,3 +1,5 @@
+<img src="./public/static/text-logo.png" width="30%" />
+
 # vibecode.law
 
 The open-source platform powering [vibecode.law](https://vibecode.law) — a community-driven showcase for legaltech projects — especially prototypes built with AI coding tools.
