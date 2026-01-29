@@ -2,10 +2,12 @@
 
 namespace App\Models\Showcase;
 
+use App\Enums\MarkdownProfile;
 use App\Enums\ShowcaseStatus;
 use App\Enums\SourceStatus;
 use App\Models\PracticeArea;
 use App\Models\User;
+use App\Services\Markdown\MarkdownService;
 use App\Services\YoutubeIdExtractionService;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -66,6 +68,43 @@ class Showcase extends Model
             'source_status' => SourceStatus::class,
             'thumbnail_crop' => 'array',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::updated(function (Showcase $showcase): void {
+            $cached = $showcase->getCachedFields();
+
+            foreach ($showcase->changes as $field => $value) {
+                if (in_array($field, $cached) === false) {
+                    continue;
+                }
+
+                app(MarkdownService::class)->clearCacheByKey(
+                    cacheKey: "showcase|{$showcase->id}|$field",
+                    profile: MarkdownProfile::Basic
+                );
+            }
+        });
+
+        static::deleted(function (Showcase $showcase): void {
+            $markdownService = app(MarkdownService::class);
+
+            foreach ($showcase->getCachedFields() as $cacheKey) {
+                $markdownService->clearCacheByKey(
+                    cacheKey: "showcase|{$showcase->id}|$cacheKey",
+                    profile: MarkdownProfile::Basic
+                );
+            }
+        });
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function getCachedFields(): array
+    {
+        return ['description', 'help_needed', 'key_features'];
     }
 
     public function getRouteKeyName(): string
