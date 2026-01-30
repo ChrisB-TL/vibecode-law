@@ -1,10 +1,11 @@
-import HowItWorksController from '@/actions/App/Http/Controllers/Showcase/Help/HowItWorksController';
 import { PublicFooter } from '@/components/layout/public-footer';
 import { PublicHeader } from '@/components/layout/public-header';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { ApproveShowcaseButton } from '@/components/showcase/approve-showcase-button';
 import { RejectShowcaseModal } from '@/components/showcase/reject-showcase-modal';
 import { ShowcaseStatusBadge } from '@/components/showcase/showcase-status-badge';
+import { FancySelect } from '@/components/ui/fancy-select';
+import { FancyTextInput } from '@/components/ui/fancy-text-input';
 import { ImageUploadGallery } from '@/components/ui/image-upload-gallery';
 import {
     InfoBox,
@@ -12,29 +13,29 @@ import {
     InfoBoxTitle,
 } from '@/components/ui/info-box';
 import { InlineRichText } from '@/components/ui/inline/inline-rich-text';
-import { InlineText } from '@/components/ui/inline/inline-text';
 import { Input } from '@/components/ui/input';
 import InputError from '@/components/ui/input-error';
 import { Label } from '@/components/ui/label';
 import { PillSelect } from '@/components/ui/pill-select';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { ThumbnailSelector } from '@/components/ui/thumbnail-selector';
 import { slugify } from '@/lib/slug';
 import { type FrontendEnum } from '@/types';
 import { Form, Head } from '@inertiajs/react';
 import {
     AlertCircle,
-    Calendar,
     Code,
+    FileText,
     Globe,
     Hash,
+    HelpCircle,
+    Image,
+    Images,
     LinkIcon,
+    List,
+    Quote,
+    Tags,
+    Type,
+    Video,
 } from 'lucide-react';
 import { useState } from 'react';
 import { SaveButtonGroup } from './save-button-group';
@@ -89,7 +90,6 @@ export function ShowcaseForm({
         initialData.sourceStatus,
     );
     const [sourceUrl, setSourceUrl] = useState(initialData.sourceUrl);
-    const [launchDate, setLaunchDate] = useState(initialData.launchDate);
     const [selectedPracticeAreas, setSelectedPracticeAreas] = useState<
         (number | string)[]
     >(initialData.selectedPracticeAreaIds);
@@ -236,28 +236,173 @@ export function ShowcaseForm({
                                         />
                                     </div>
 
-                                    {initialData.status?.name !==
-                                        'Approved' && (
-                                        <p className="text-muted-foreground">
-                                            See our{' '}
-                                            <a
-                                                href={HowItWorksController.url()}
-                                                target="_blank"
-                                                className="font-medium underline underline-offset-2 hover:text-neutral-700 dark:text-white dark:hover:text-neutral-300"
-                                            >
-                                                how it works
-                                            </a>{' '}
-                                            page to learn more (opens in new
-                                            window).
-                                        </p>
-                                    )}
+                                    <div className="mx-auto mt-8 max-w-3xl space-y-8">
+                                        {/* Title Section */}
+                                        <FancyTextInput
+                                            name="title"
+                                            value={title}
+                                            onChange={(e) =>
+                                                setTitle(e.target.value)
+                                            }
+                                            placeholder="Enter your project title..."
+                                            error={errors.title}
+                                            label="Project Title"
+                                            labelIcon={
+                                                <Type className="size-5" />
+                                            }
+                                            required
+                                        />
 
-                                    <div className="mt-8 flex flex-col gap-4 lg:flex-row lg:gap-8">
-                                        {/* Main Content - Inline Editing */}
-                                        <div className="flex-1 space-y-8">
-                                            {/* Title & Thumbnail Section */}
-                                            <div>
-                                                <div className="flex items-start gap-4">
+                                        {/* Tagline */}
+                                        <FancyTextInput
+                                            name="tagline"
+                                            value={tagline}
+                                            onChange={(e) =>
+                                                setTagline(e.target.value)
+                                            }
+                                            placeholder="A short, catchy description of your project..."
+                                            error={errors.tagline}
+                                            label="Tagline"
+                                            labelIcon={
+                                                <Quote className="size-5" />
+                                            }
+                                            required
+                                        />
+
+                                        {/* Gallery - key resets state when images change (e.g., after save) */}
+                                        <ImageUploadGallery
+                                            key={initialData.images
+                                                .map((img) => img.id)
+                                                .join(',')}
+                                            name="images"
+                                            label="Gallery"
+                                            labelIcon={
+                                                <Images className="size-5" />
+                                            }
+                                            description="Up to 10 images. Min 400x225px and max 4MB per image."
+                                            existingImages={initialData.images}
+                                            removedImagesFieldName={
+                                                imageDeletionConfig.removedImagesFieldName
+                                            }
+                                            deletedNewImagesFieldName={
+                                                imageDeletionConfig.deletedNewImagesFieldName
+                                            }
+                                            error={
+                                                errors.images as
+                                                    | string
+                                                    | undefined
+                                            }
+                                            imageErrors={imageErrors}
+                                        />
+
+                                        {/* About Section */}
+                                        <InlineRichText
+                                            name="description"
+                                            value={description}
+                                            onChange={setDescription}
+                                            label="About the Project"
+                                            labelIcon={
+                                                <FileText className="size-5" />
+                                            }
+                                            placeholder="Tell us about your project. What does it do? What problem does it solve?"
+                                            height={250}
+                                            error={errors.description}
+                                            required
+                                        />
+
+                                        {/* Practice Areas */}
+                                        <PillSelect
+                                            name="practice_area_ids"
+                                            label="Practice Areas"
+                                            labelIcon={
+                                                <Tags className="size-5" />
+                                            }
+                                            options={practiceAreas.map(
+                                                (pa) => ({
+                                                    value: pa.id,
+                                                    label: pa.name,
+                                                }),
+                                            )}
+                                            selected={selectedPracticeAreas}
+                                            onChange={setSelectedPracticeAreas}
+                                            placeholder="Select at least one practice area"
+                                            error={
+                                                errors.practice_area_ids as
+                                                    | string
+                                                    | undefined
+                                            }
+                                            required
+                                        />
+
+                                        {/* Key Features */}
+                                        <InlineRichText
+                                            name="key_features"
+                                            value={keyFeatures}
+                                            onChange={setKeyFeatures}
+                                            label="Key Features"
+                                            labelIcon={
+                                                <List className="size-5" />
+                                            }
+                                            placeholder="List the main features of your project..."
+                                            height={200}
+                                            error={errors.key_features}
+                                            required
+                                        />
+
+                                        {/* Slug field (moderators only) */}
+                                        {showSlugField === true && (
+                                            <div className="space-y-2">
+                                                <Label
+                                                    htmlFor="slug"
+                                                    className="flex items-center gap-2 text-xl font-semibold text-neutral-900 dark:text-white"
+                                                >
+                                                    <Hash className="size-5" />
+                                                    URL Slug *
+                                                </Label>
+                                                <Input
+                                                    id="slug"
+                                                    name="slug"
+                                                    value={slug}
+                                                    onChange={(e) =>
+                                                        setSlug(e.target.value)
+                                                    }
+                                                    onBlur={(e) =>
+                                                        setSlug(
+                                                            slugify(
+                                                                e.target.value,
+                                                            ),
+                                                        )
+                                                    }
+                                                    placeholder="my-awesome-project"
+                                                    aria-invalid={
+                                                        errors.slug !==
+                                                        undefined
+                                                    }
+                                                />
+                                                <InputError
+                                                    message={errors.slug}
+                                                />
+                                            </div>
+                                        )}
+
+                                        {/* Optional Fields Section */}
+                                        <fieldset className="rounded-xl border border-neutral-200 p-6 dark:border-neutral-800">
+                                            <legend className="px-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                                                Optional
+                                            </legend>
+
+                                            <div className="space-y-6">
+                                                {/* Thumbnail */}
+                                                <div className="space-y-2">
+                                                    <Label className="flex items-center gap-2 text-xl font-semibold text-neutral-900 dark:text-white">
+                                                        <Image className="size-5" />
+                                                        Thumbnail
+                                                    </Label>
+                                                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                                                        A square image used in
+                                                        showcase listings. Min
+                                                        100×100px, max 2MB.
+                                                    </p>
                                                     <ThumbnailSelector
                                                         name="thumbnail"
                                                         currentOriginalUrl={
@@ -269,86 +414,11 @@ export function ShowcaseForm({
                                                             undefined
                                                         }
                                                         error={errors.thumbnail}
-                                                        showError={false}
+                                                        size="md"
                                                     />
-                                                    <div className="flex-1">
-                                                        <InlineText
-                                                            name="title"
-                                                            value={title}
-                                                            onChange={(e) =>
-                                                                setTitle(
-                                                                    e.target
-                                                                        .value,
-                                                                )
-                                                            }
-                                                            placeholder="Enter your project title..."
-                                                            textClasses="text-xl lg:text-3xl"
-                                                            weight="bold"
-                                                            error={errors.title}
-                                                            label="Project Title"
-                                                        />
-                                                    </div>
                                                 </div>
-                                                <InputError
-                                                    message={errors.thumbnail}
-                                                    className="mt-1"
-                                                />
-                                            </div>
-
-                                            {/* Tagline */}
-                                            <div>
-                                                <InlineText
-                                                    name="tagline"
-                                                    value={tagline}
-                                                    onChange={(e) =>
-                                                        setTagline(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    placeholder="A short, catchy description of your project..."
-                                                    textClasses="text-base lg:text-xl"
-                                                    className="text-neutral-600 dark:text-neutral-400"
-                                                    error={errors.tagline}
-                                                    label="Tagline"
-                                                />
-                                            </div>
-
-                                            {/* Gallery - key resets state when images change (e.g., after save) */}
-                                            <ImageUploadGallery
-                                                key={initialData.images
-                                                    .map((img) => img.id)
-                                                    .join(',')}
-                                                name="images"
-                                                existingImages={
-                                                    initialData.images
-                                                }
-                                                removedImagesFieldName={
-                                                    imageDeletionConfig.removedImagesFieldName
-                                                }
-                                                deletedNewImagesFieldName={
-                                                    imageDeletionConfig.deletedNewImagesFieldName
-                                                }
-                                                error={
-                                                    errors.images as
-                                                        | string
-                                                        | undefined
-                                                }
-                                                imageErrors={imageErrors}
-                                            />
-
-                                            {/* Video URL */}
-                                            <div className="space-y-2">
-                                                <label
-                                                    htmlFor="video_url"
-                                                    className="block text-xl font-semibold text-neutral-900 dark:text-white"
-                                                >
-                                                    Video URL
-                                                    <span className="ml-2 text-sm font-normal text-neutral-400">
-                                                        (optional)
-                                                    </span>
-                                                </label>
-                                                <Input
-                                                    id="video_url"
+                                                {/* Video URL */}
+                                                <FancyTextInput
                                                     name="video_url"
                                                     type="url"
                                                     value={videoUrl}
@@ -358,302 +428,129 @@ export function ShowcaseForm({
                                                         )
                                                     }
                                                     placeholder="https://youtube.com/..."
-                                                    aria-invalid={
-                                                        errors.video_url !==
-                                                        undefined
+                                                    label="Video URL"
+                                                    labelIcon={
+                                                        <Video className="size-5" />
                                                     }
+                                                    description="YouTube videos will display embedded in your showcase page. Other platforms will just be links."
+                                                    error={errors.video_url}
                                                 />
-                                                <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                                                    YouTube videos will display
-                                                    embedded in your showcase
-                                                    page. Other platforms will
-                                                    just be links.
-                                                </p>
-                                                <InputError
-                                                    message={errors.video_url}
+                                                {/* Demo URL */}
+                                                <FancyTextInput
+                                                    name="url"
+                                                    type="url"
+                                                    value={url}
+                                                    onChange={(e) =>
+                                                        setUrl(e.target.value)
+                                                    }
+                                                    placeholder="https://your-project.com"
+                                                    label="Demo URL"
+                                                    labelIcon={
+                                                        <Globe className="size-5" />
+                                                    }
+                                                    description="Link to a prototype/demo of your project, rather than a marketing or landing page."
+                                                    error={errors.url}
                                                 />
-                                            </div>
-
-                                            {/* About Section */}
-                                            <InlineRichText
-                                                name="description"
-                                                value={description}
-                                                onChange={setDescription}
-                                                label="About the Project"
-                                                placeholder="Tell us about your project. What does it do? What problem does it solve?"
-                                                height={250}
-                                                error={errors.description}
-                                                required
-                                            />
-
-                                            {/* Practice Areas */}
-                                            <PillSelect
-                                                name="practice_area_ids"
-                                                label="Practice Areas"
-                                                options={practiceAreas.map(
-                                                    (pa) => ({
-                                                        value: pa.id,
-                                                        label: pa.name,
-                                                    }),
-                                                )}
-                                                selected={selectedPracticeAreas}
-                                                onChange={
-                                                    setSelectedPracticeAreas
-                                                }
-                                                placeholder="Select at least one practice area"
-                                                error={
-                                                    errors.practice_area_ids as
-                                                        | string
-                                                        | undefined
-                                                }
-                                                required
-                                            />
-
-                                            {/* Key Features */}
-                                            <InlineRichText
-                                                name="key_features"
-                                                value={keyFeatures}
-                                                onChange={setKeyFeatures}
-                                                label="Key Features"
-                                                placeholder="List the main features of your project..."
-                                                height={200}
-                                                error={errors.key_features}
-                                            />
-
-                                            {/* Help Needed */}
-                                            <InlineRichText
-                                                name="help_needed"
-                                                value={helpNeeded}
-                                                onChange={setHelpNeeded}
-                                                label="Help Needed"
-                                                placeholder="Are you looking for collaborators, feedback, or specific help?"
-                                                height={200}
-                                                error={errors.help_needed}
-                                            />
-
-                                            {/* Bottom Save Button - Desktop */}
-                                            <SaveButtonGroup
-                                                recentlySuccessful={
-                                                    recentlySuccessful
-                                                }
-                                                processing={processing}
-                                                saveButtonText={saveButtonText}
-                                                showSubmitButton={canSubmit}
-                                                className="hidden items-center justify-end gap-3 border-t pt-6 lg:flex"
-                                                size="lg"
-                                            />
-                                        </div>
-
-                                        {/* Sidebar - Metadata */}
-                                        <div className="w-full lg:w-72">
-                                            <div className="rounded-xl border bg-card p-6 shadow-sm lg:sticky lg:top-4">
-                                                <h3 className="mb-4 text-sm font-medium text-neutral-900 dark:text-white">
-                                                    Metadata
-                                                </h3>
-                                                <div className="space-y-4">
-                                                    {showSlugField === true && (
-                                                        <div className="space-y-2">
-                                                            <Label
-                                                                htmlFor="slug"
-                                                                className="flex items-center gap-2 text-sm"
-                                                            >
-                                                                <Hash className="size-4" />
-                                                                URL Slug *
-                                                            </Label>
-                                                            <Input
-                                                                id="slug"
-                                                                name="slug"
-                                                                value={slug}
-                                                                onChange={(e) =>
-                                                                    setSlug(
-                                                                        e.target
-                                                                            .value,
-                                                                    )
-                                                                }
-                                                                onBlur={(e) =>
-                                                                    setSlug(
-                                                                        slugify(
-                                                                            e
-                                                                                .target
-                                                                                .value,
-                                                                        ),
-                                                                    )
-                                                                }
-                                                                placeholder="my-awesome-project"
-                                                                aria-invalid={
-                                                                    errors.slug !==
-                                                                    undefined
-                                                                }
-                                                            />
-                                                            <InputError
-                                                                message={
-                                                                    errors.slug
-                                                                }
-                                                            />
-                                                        </div>
+                                                {/* Help Needed */}
+                                                <InlineRichText
+                                                    name="help_needed"
+                                                    value={helpNeeded}
+                                                    onChange={setHelpNeeded}
+                                                    label="Help Needed"
+                                                    labelIcon={
+                                                        <HelpCircle className="size-5" />
+                                                    }
+                                                    placeholder="Are you looking for collaborators, feedback, or specific help?"
+                                                    height={200}
+                                                    error={errors.help_needed}
+                                                    required
+                                                />
+                                                {/* Source Code Status */}
+                                                <FancySelect
+                                                    name="source_status"
+                                                    value={sourceStatus}
+                                                    onValueChange={
+                                                        setSourceStatus
+                                                    }
+                                                    options={sourceStatuses.map(
+                                                        (status) => ({
+                                                            value: String(
+                                                                status.value,
+                                                            ),
+                                                            label: status.label,
+                                                        }),
                                                     )}
+                                                    placeholder="Select source code availability..."
+                                                    label="Source Code Availability"
+                                                    labelIcon={
+                                                        <Code className="size-5" />
+                                                    }
+                                                    description="Is the code for your project available to the public (e.g. on Github)? If not, leave this as 'Not Available'."
+                                                    error={errors.source_status}
+                                                />
 
+                                                {showSourceUrl === true && (
                                                     <div className="space-y-2">
                                                         <Label
-                                                            htmlFor="source_status"
-                                                            className="flex items-center gap-2 text-sm"
+                                                            htmlFor="source_url"
+                                                            className="flex items-center gap-2 text-xl font-semibold text-neutral-900 dark:text-white"
                                                         >
-                                                            <Code className="size-4" />
-                                                            Source Code *
-                                                        </Label>
-                                                        <Select
-                                                            name="source_status"
-                                                            value={sourceStatus}
-                                                            onValueChange={
-                                                                setSourceStatus
-                                                            }
-                                                        >
-                                                            <SelectTrigger
-                                                                aria-invalid={
-                                                                    errors.source_status !==
-                                                                    undefined
-                                                                }
-                                                            >
-                                                                <SelectValue placeholder="Select status" />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                {sourceStatuses.map(
-                                                                    (
-                                                                        status,
-                                                                    ) => (
-                                                                        <SelectItem
-                                                                            key={
-                                                                                status.value
-                                                                            }
-                                                                            value={String(
-                                                                                status.value,
-                                                                            )}
-                                                                        >
-                                                                            {
-                                                                                status.label
-                                                                            }
-                                                                        </SelectItem>
-                                                                    ),
-                                                                )}
-                                                            </SelectContent>
-                                                        </Select>
-                                                        <InputError
-                                                            message={
-                                                                errors.source_status
-                                                            }
-                                                        />
-                                                    </div>
-
-                                                    {showSourceUrl === true && (
-                                                        <div className="space-y-2">
-                                                            <Label
-                                                                htmlFor="source_url"
-                                                                className="flex items-center gap-2 text-sm"
-                                                            >
-                                                                <LinkIcon className="size-4" />
-                                                                Source URL *
-                                                            </Label>
-                                                            <Input
-                                                                id="source_url"
-                                                                name="source_url"
-                                                                type="url"
-                                                                value={
-                                                                    sourceUrl
-                                                                }
-                                                                onChange={(e) =>
-                                                                    setSourceUrl(
-                                                                        e.target
-                                                                            .value,
-                                                                    )
-                                                                }
-                                                                placeholder="https://github.com/..."
-                                                                aria-invalid={
-                                                                    errors.source_url !==
-                                                                    undefined
-                                                                }
-                                                            />
-                                                            <InputError
-                                                                message={
-                                                                    errors.source_url
-                                                                }
-                                                            />
-                                                        </div>
-                                                    )}
-
-                                                    <div className="space-y-2">
-                                                        <Label
-                                                            htmlFor="url"
-                                                            className="flex items-center gap-2 text-sm"
-                                                        >
-                                                            <Globe className="size-4" />
-                                                            Website URL
+                                                            <LinkIcon className="size-5" />
+                                                            Source URL *
                                                         </Label>
                                                         <Input
-                                                            id="url"
-                                                            name="url"
+                                                            id="source_url"
+                                                            name="source_url"
                                                             type="url"
-                                                            value={url}
+                                                            value={sourceUrl}
                                                             onChange={(e) =>
-                                                                setUrl(
+                                                                setSourceUrl(
                                                                     e.target
                                                                         .value,
                                                                 )
                                                             }
-                                                            placeholder="https://your-project.com"
+                                                            placeholder="https://github.com/..."
                                                             aria-invalid={
-                                                                errors.url !==
-                                                                undefined
-                                                            }
-                                                        />
-                                                        <InputError
-                                                            message={errors.url}
-                                                        />
-                                                    </div>
-
-                                                    <div className="space-y-2">
-                                                        <Label
-                                                            htmlFor="launch_date"
-                                                            className="flex items-center gap-2 text-sm"
-                                                        >
-                                                            <Calendar className="size-4" />
-                                                            Launch Date
-                                                        </Label>
-                                                        <Input
-                                                            id="launch_date"
-                                                            name="launch_date"
-                                                            type="date"
-                                                            value={launchDate}
-                                                            onChange={(e) =>
-                                                                setLaunchDate(
-                                                                    e.target
-                                                                        .value,
-                                                                )
-                                                            }
-                                                            aria-invalid={
-                                                                errors.launch_date !==
+                                                                errors.source_url !==
                                                                 undefined
                                                             }
                                                         />
                                                         <InputError
                                                             message={
-                                                                errors.launch_date
+                                                                errors.source_url
                                                             }
                                                         />
                                                     </div>
-                                                </div>
+                                                )}
                                             </div>
-                                        </div>
+                                        </fieldset>
+
+                                        {/* Bottom Save Button - Desktop */}
+                                        <SaveButtonGroup
+                                            recentlySuccessful={
+                                                recentlySuccessful
+                                            }
+                                            processing={processing}
+                                            saveButtonText={saveButtonText}
+                                            showSubmitButton={canSubmit}
+                                            className="hidden items-center justify-end gap-3 pt-3 lg:flex"
+                                            size="lg"
+                                        />
                                     </div>
 
                                     {/* Bottom Save Button - Mobile */}
-                                    <SaveButtonGroup
-                                        recentlySuccessful={recentlySuccessful}
-                                        processing={processing}
-                                        saveButtonText={saveButtonText}
-                                        showSubmitButton={canSubmit}
-                                        className="flex items-center justify-end gap-3 pt-6 lg:hidden"
-                                        size="lg"
-                                    />
+                                    <div className="mx-auto max-w-3xl">
+                                        <SaveButtonGroup
+                                            recentlySuccessful={
+                                                recentlySuccessful
+                                            }
+                                            processing={processing}
+                                            saveButtonText={saveButtonText}
+                                            showSubmitButton={canSubmit}
+                                            className="flex items-center justify-end gap-3 pt-6 lg:hidden"
+                                            size="lg"
+                                        />
+                                    </div>
                                 </div>
                             );
                         }}

@@ -15,6 +15,9 @@ function generateId(): string {
 
 interface ImageUploadGalleryProps {
     name: string;
+    label?: string;
+    labelIcon?: React.ReactNode;
+    description?: string;
     className?: string;
     error?: string;
     imageErrors?: Record<string, string>;
@@ -56,6 +59,9 @@ function HiddenFileInput({ name, file }: { name: string; file: File }) {
 
 export function ImageUploadGallery({
     name,
+    label = 'Gallery',
+    labelIcon,
+    description,
     className,
     error,
     imageErrors,
@@ -164,9 +170,15 @@ export function ImageUploadGallery({
 
     return (
         <div className={cn('space-y-3', className)}>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                Gallery
+            <p className="flex items-center gap-2 text-xl font-semibold text-neutral-900 dark:text-white">
+                {labelIcon}
+                {label}
             </p>
+            {description !== undefined && (
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                    {description}
+                </p>
+            )}
 
             {images.length > 0 ? (
                 <>
@@ -240,7 +252,7 @@ export function ImageUploadGallery({
                     <ImagePlus className="size-8" />
                     <span className="text-sm">Click to add images</span>
                     <span className="text-xs">
-                        Up to {maxImages} images, 2MB each, min 1000x562px
+                        Up to {maxImages} images, 4MB each, min 400×225px
                     </span>
                 </button>
             )}
