@@ -13,6 +13,7 @@ interface InlineRichTextProps {
     height?: number;
     error?: string;
     required?: boolean;
+    showOptionalLabel?: boolean;
 }
 
 export function InlineRichText({
@@ -26,6 +27,7 @@ export function InlineRichText({
     height = 200,
     error,
     required = false,
+    showOptionalLabel = true,
 }: InlineRichTextProps) {
     const [internalValue, setInternalValue] = useState(value ?? '');
     const [isFocused, setIsFocused] = useState(false);
@@ -62,7 +64,7 @@ export function InlineRichText({
                 <label className="flex items-center gap-2 text-xl font-semibold text-neutral-900 dark:text-white">
                     {labelIcon}
                     {label}
-                    {required === false && (
+                    {required === false && showOptionalLabel === true && (
                         <span className="ml-2 text-sm font-normal text-neutral-400">
                             (optional)
                         </span>

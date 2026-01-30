@@ -434,6 +434,7 @@ export function ShowcaseForm({
                                                     }
                                                     description="YouTube videos will display embedded in your showcase page. Other platforms will just be links."
                                                     error={errors.video_url}
+                                                    showOptionalLabel={false}
                                                 />
                                                 {/* Demo URL */}
                                                 <FancyTextInput
@@ -450,6 +451,7 @@ export function ShowcaseForm({
                                                     }
                                                     description="Link to a prototype/demo of your project, rather than a marketing or landing page."
                                                     error={errors.url}
+                                                    showOptionalLabel={false}
                                                 />
                                                 {/* Help Needed */}
                                                 <InlineRichText
@@ -463,7 +465,7 @@ export function ShowcaseForm({
                                                     placeholder="Are you looking for collaborators, feedback, or specific help?"
                                                     height={200}
                                                     error={errors.help_needed}
-                                                    required
+                                                    showOptionalLabel={false}
                                                 />
                                                 {/* Source Code Status */}
                                                 <FancySelect
@@ -487,6 +489,7 @@ export function ShowcaseForm({
                                                     }
                                                     description="Is the code for your project available to the public (e.g. on Github)? If not, leave this as 'Not Available'."
                                                     error={errors.source_status}
+                                                    showOptionalLabel={false}
                                                 />
 
                                                 {showSourceUrl === true && (

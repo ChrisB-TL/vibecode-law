@@ -8,6 +8,7 @@ interface FancyTextInputProps
     description?: string;
     error?: string;
     required?: boolean;
+    showOptionalLabel?: boolean;
 }
 
 export const FancyTextInput = forwardRef<HTMLInputElement, FancyTextInputProps>(
@@ -19,6 +20,7 @@ export const FancyTextInput = forwardRef<HTMLInputElement, FancyTextInputProps>(
             description,
             error,
             required = false,
+            showOptionalLabel = true,
             id,
             type = 'text',
             value,
@@ -44,12 +46,17 @@ export const FancyTextInput = forwardRef<HTMLInputElement, FancyTextInputProps>(
                     >
                         {labelIcon}
                         {label}
-                        {required === false && (
+                        {required === false && showOptionalLabel === true && (
                             <span className="ml-2 text-sm font-normal text-neutral-400">
                                 (optional)
                             </span>
                         )}
                     </label>
+                )}
+                {description !== undefined && (
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                        {description}
+                    </p>
                 )}
                 <div
                     className={cn(
@@ -93,11 +100,6 @@ export const FancyTextInput = forwardRef<HTMLInputElement, FancyTextInputProps>(
                         />
                     )}
                 </div>
-                {description !== undefined && (
-                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                        {description}
-                    </p>
-                )}
                 {error !== undefined && (
                     <p className="text-sm text-red-500 dark:text-red-400">
                         {error}
