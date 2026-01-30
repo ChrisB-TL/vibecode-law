@@ -1,3 +1,4 @@
+import ShowcaseDestroyController from '@/actions/App/Http/Controllers/Showcase/ManageShowcase/ShowcaseDestroyController';
 import ShowcaseEditController from '@/actions/App/Http/Controllers/Showcase/ManageShowcase/ShowcaseEditController';
 import ShowcaseDraftEditController from '@/actions/App/Http/Controllers/Showcase/ManageShowcaseDraft/ShowcaseDraftEditController';
 import HeadingSmall from '@/components/heading/heading-small';
@@ -7,14 +8,70 @@ import {
     ShowcaseUserInfo,
 } from '@/components/showcase/showcase-list-item';
 import { ShowcaseSection } from '@/components/showcase/showcase-section';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { buttonVariants } from '@/components/ui/button';
 import StaffAreaLayout from '@/layouts/staff-area/layout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import { Trash2 } from 'lucide-react';
 
 interface ShowcaseModerationIndexProps {
     pendingShowcases: App.Http.Resources.Showcase.ShowcaseResource[];
     rejectedShowcases: App.Http.Resources.Showcase.ShowcaseResource[];
     pendingDrafts: App.Http.Resources.Showcase.ShowcaseDraftResource[];
     rejectedDrafts: App.Http.Resources.Showcase.ShowcaseDraftResource[];
+}
+
+function DeleteShowcaseButton({
+    showcase,
+}: {
+    showcase: App.Http.Resources.Showcase.ShowcaseResource;
+}) {
+    const handleDelete = () => {
+        router.delete(
+            ShowcaseDestroyController.url({ showcase: showcase.slug }),
+        );
+    };
+
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <button
+                    type="button"
+                    className="rounded-md p-2 text-neutral-400 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+                >
+                    <Trash2 className="size-4" />
+                </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Delete showcase?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This will permanently delete "{showcase.title}". This
+                        action cannot be undone.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={handleDelete}
+                        className={buttonVariants({ variant: 'destructive' })}
+                    >
+                        Delete
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
 }
 
 export default function ShowcaseModerationIndex({
@@ -54,6 +111,9 @@ export default function ShowcaseModerationIndex({
                                             user={showcase.user}
                                         />
                                     )
+                                }
+                                actions={
+                                    <DeleteShowcaseButton showcase={showcase} />
                                 }
                             />
                         )}
@@ -103,6 +163,9 @@ export default function ShowcaseModerationIndex({
                                             user={showcase.user}
                                         />
                                     )
+                                }
+                                actions={
+                                    <DeleteShowcaseButton showcase={showcase} />
                                 }
                             />
                         )}
