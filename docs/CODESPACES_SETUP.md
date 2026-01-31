@@ -22,7 +22,9 @@ After creating, you'll be redirected to your new fork.
 
 ## Step 2: Access Codespaces
 
-Make sure you are in your fork in the Github UI. The tell take signs will be (a) "forked from vibecode-law/vibecode-law" under the name, and a box saying "This branch is up to date with vibecode-law/vibecode-law":
+Make sure you are in your fork in the Github UI. 
+
+The tell take signs will be (a) "forked from vibecode-law/vibecode-law" under the name; and (b) a box saying "This branch is up to date with vibecode-law/vibecode-law":
 
 ![Forked Telltales](./images/forked-telltales.png "Forked Telltales")
 
@@ -48,7 +50,7 @@ In the UI that appears, use the arrows and space bar to select all guidelines/sk
 
 ![Boost Menu One](./images/boost-menu-one.png "Boost Menu One")
 
-In the next menu, use the arrows and space bar to select the AI tools you will use (in this picture, just Claude Code) and press enter one ready:
+In the next menu, use the arrows and space bar to select the AI tools you will use (in this picture, just Claude Code) and press enter once ready:
 
 ![Boost Menu Two](./images/boost-menu-two.png "Boost Menu Two")
 
@@ -78,11 +80,11 @@ You can open up the Claude Code UI in the editor by clicking on the orange Claud
 
 You'll need to authenticate by following the onscreen instructions.
 
-When asked if you want to open an external website click Cancel, and manually copy the link it offers you instead and paste it into your browser - as the automatically opened link will not redirect correctly in this environment. 
+When asked if you want to open an external website click Cancel, and manually copy the link it offers you instead and paste it into your browser - as the link it opens automatically will not redirect correctly in this environment. 
 
-Follow the instructions in your browser, and then paste the code it gives you back into the Claude menu on the editor.
+Follow the instructions in your browser, and then paste the code Anthropic gives you back into the Claude menu within the editor.
 
-If it doesn't immediately work, close the Claude tab and re-open it.
+Sometimes you'll get a blank Claude screen after authenticating. If so close the Claude tab and re-open it.
 
 Prompt away!
 
